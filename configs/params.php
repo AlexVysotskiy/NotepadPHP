@@ -7,6 +7,7 @@ return array(
             'user' => 'dragon_gate',
             'password' => 'dragongatepass',
             'dbname' => 'notepad_db',
+            'host' => 'localhost',
         ),
         'entities' => array(
             'user' => array(
@@ -18,5 +19,6 @@ return array(
                 'table' => '',
             )
         )
-    )
+    ),
+    'anon.route_redirect' => 'default'
 );

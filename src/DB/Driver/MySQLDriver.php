@@ -230,4 +230,9 @@ class MySQLDriver extends Driver
         }
     }
 
+    public function setConnectionSettings($settings)
+    {
+        $this->_connection = new \DB\Connection\MySQLConnection(new \DB\Settings($settings));
+    }
+
 }

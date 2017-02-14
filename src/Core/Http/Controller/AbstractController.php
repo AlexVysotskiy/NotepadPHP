@@ -26,6 +26,13 @@ abstract class AbstractController
         return new Response($content);
     }
 
+    protected function redirectByRoute($routeName, $params = array())
+    {
+        $url = $this->get('router')->generateUrl($routeName, $params);
+
+        return new Response\Redirect($url);
+    }
+
     protected function get($service)
     {
         return $this->_container->getService($service);

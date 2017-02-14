@@ -6,6 +6,7 @@ return array(
         'calls' => array(
             'setConfigType' => array('php'),
             'setDefaultRoute' => array('default'),
+            'setRequest' => array('@request'),
         )
     ),
     'request' => array(
@@ -23,5 +24,18 @@ return array(
     ),
     'template_renderer' => array(
         'class' => '\Core\Http\Renderer'
+    ),
+    'db.connector' => array(
+        'class' => '\DB\EntityManager',
+        'calls' => array(
+            'setDriver' => array('@db.driver.mysql'),
+        )
+    ),
+    'db.driver.mysql' => array(
+        'class' => '\DB\Driver\MySQLDriver',
+        'calls' => array(
+            'setConnectionSettings' => array('%db:connection'),
+            'setEntitySettings' => array('%db:entities'),
+        )
     ),
 );

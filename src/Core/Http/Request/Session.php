@@ -48,10 +48,21 @@ class Session
     public function close()
     {
         if (session_status() === PHP_SESSION_ACTIVE) {
-            
+
             $_SESSION['app_params'] = json_encode($this->_params);
             session_write_close();
         }
+    }
+
+    public function clear()
+    {
+        $_SESSION = array();
+        session_destroy();
+    }
+    
+    public function isAuth()
+    {
+        return true;
     }
 
 }

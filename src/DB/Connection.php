@@ -26,7 +26,7 @@ abstract class Connection
 
     public function __construct(Settings $settings = null)
     {
-        $this->settings = $settings;
+        $this->_settings = $settings;
     }
 
     /**
@@ -44,7 +44,7 @@ abstract class Connection
         if (!$this->_connection) {
             $this->makeConnection();
         }
-
+        
         return $this->_connection;
     }
 

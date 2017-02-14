@@ -35,20 +35,27 @@ abstract class Driver
     /**
      * выбираем сущность
      */
-    abstract public function select($criteria, $order = null, $offset = 0, $limit = 0);
+    abstract public function select($entityType, $criteria, $order = array(), $page = 0, $limit = 30);
 
-    abstract public function selectOne($criteria, $order = null);
+    abstract public function selectOne($entityType, $criteria, $order = array());
 
     /**
      * удаляем сущности
      */
     abstract public function delete($entitiesList);
 
-    abstract public function deleteByCriteria($criteria);
+    abstract public function deleteByCriteria($entityType, $criteria);
+    
+//    abstract public function executeCommand();
 
     public function setConnection(Connection $connection)
     {
         $this->_connection = $connection;
+    }
+
+    public function getConnection()
+    {
+        return $this->_connection;
     }
 
     public function setEntitySettings($settings)
