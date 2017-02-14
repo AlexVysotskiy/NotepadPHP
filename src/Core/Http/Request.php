@@ -1,9 +1,9 @@
 <?php
 
-namespace Core;
+namespace Core\Http;
 
-use Core\Request\Session;
-use Core\Request\Cookie;
+use Core\Http\Request\Session;
+use Core\Http\Request\Cookie;
 
 /**
  * Description of Request
@@ -47,13 +47,10 @@ class Request
     {
         $this->request = $_REQUEST;
         $this->server = $_SERVER;
-        
+
         $uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
 
         $this->uri = preg_replace('/\?.+$/', '', $uri);
-        
-        $this->session = new Session();
-        $this->cookie = new Cookie();
     }
 
     public function getUri()
@@ -69,6 +66,16 @@ class Request
     public function set($param, $value)
     {
         $this->request[$param] = $value;
+    }
+
+    public function setSession(Session $session)
+    {
+        $this->session = $session;
+    }
+
+    public function setCookie(Cookie $cookie)
+    {
+        $this->cookie = $cookie;
     }
 
 }

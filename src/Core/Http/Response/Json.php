@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\Response;
+namespace Core\Http\Response;
 
-use Core\Response;
+use Core\Http\Response;
 
 /**
  * Description of Json

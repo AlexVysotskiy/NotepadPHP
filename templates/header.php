@@ -2,9 +2,9 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title></title>
-        <link rel="stylesheet/css" href="css/bootstrap.min.css" />
-        <link rel="stylesheet/css" href="css/style.css" />
+        <title>Записная книжка</title>
+        <link rel="stylesheet/css" href="content/css/bootstrap.min.css" />
+        <link rel="stylesheet/css" href="content/css/style.css" />
     </head>
     <body>
         <div class="container-fluid">

@@ -1,6 +1,6 @@
 <?php
 
-namespace Core;
+namespace Core\Http;
 
 /**
  * Description of Renderer
@@ -10,9 +10,9 @@ namespace Core;
 class Renderer
 {
 
-    public static function render($file, $data)
+    public function render($file, $data)
     {
-        $filePath = ROOT_PATH . '/templates/' . $file;
+        $filePath = ROOT_PATH . '/templates/' . $file . '.php';
         if (file_exists($filePath)) {
 
             extract($data);
