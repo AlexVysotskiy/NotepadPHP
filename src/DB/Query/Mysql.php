@@ -59,9 +59,9 @@ abstract class Mysql extends Query
             $sqlPattern .= ' ORDER BY ' . implode(', ', $order);
         }
 
-        if ($this->_limit) {
+        if ($this->_limit !== null) {
 
-            $sqlPattern .= ' LIMIT ' . ($this->_page ? ($this->_page * $this->_limit) . ',' : '') . ' ' . $this->_limit;
+            $sqlPattern .= ' LIMIT ' . ($this->_page !== null ? ($this->_page * $this->_limit) . ',' : '') . ' ' . $this->_limit;
         }
 
         return $sqlPattern;

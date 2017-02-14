@@ -103,67 +103,131 @@ class MySQLDriver extends Driver
             $entitiesList = array();
         }
 
-        $newEntities = array();
+        /* @var $connection \PDO */
+        $connection = $this->_connection->getConnection();
 
-        foreach ($entitiesList as $entity) {
+        try {
 
-            if ($entity instanceof \DB\Entity) {
+            $settings = $this->_entitySettings['entities'];
+            $command = new \DB\Query\Mysql\Insert();
 
-                $entityType = $entity->getType();
-                if (!isset($removedEntities[$entityType])) {
-                    $removedEntities[$entityType] = array();
+            $connection->beginTransaction();
+
+            foreach ($entitiesList as $entity) {
+
+                if ($entity instanceof \DB\Entity) {
+
+                    if (isset($settings[$entity->getType()]['table'])) {
+
+                        $values = $entity->toArray();
+
+                        $command->setTable($settings[$entity->getType()]['table']);
+                        $command->setInsertCount(1);
+                        $command->setFields(array_keys($values));
+
+                        $connection->prepare($command->compile())->execute(array_values($values));
+                    }
                 }
-
-                $removedEntities[$entityType][] = $entity->getId();
             }
-        }
 
-        if ($removedEntities) {
+            $connection->commit();
+        } catch (\Exception $e) {
+
+            $connection->rollBack();
+
+            throw $e;
+        }
+    }
+
+    public function select($entityType, $criteria, $order = array(), $page = 0, $limit = 30)
+    {
+        if (isset($this->_entitySettings['entities'][$entityType]['table'])) {
+
+            $settings = $this->_entitySettings['entities'][$entityType];
 
             /* @var $connection \PDO */
             $connection = $this->_connection->getConnection();
 
             try {
 
-                $connection->beginTransaction();
+                $command = new \DB\Query\Mysql\Insert();
+                $command->setTable($settings['table']);
+                $command->setOrder($order);
+                $command->setPage($page);
+                $command->setLimit($limit);
 
-                $command = new \DB\Query\Mysql\Delete();
-                foreach ($removedEntities as $entityType => $ids) {
-
-                    if ($ids && isset($this->_entitySettings['entities'][$entityType]['table'])) {
-
-                        $command->setTable($this->_entitySettings['entities'][$entityType]['table']);
-                        $command->setLimit(count($ids));
-
-                        $command->where()->in('id', $ids);
-
-                        $connection->prepare($command->compile())->execute();
-                    }
+                foreach ($criteria as $info) {
+                    $command->where()->add($info[0], $info[1], $info[2]);
                 }
 
-                $connection->commit();
-            } catch (\Exception $e) {
+                $command->setFields(array('*'));
 
-                $connection->rollBack();
+                $sth = $connection->query($command->compile());
+                $sth->setFetchMode(\PDO::FETCH_CLASS, $settings['class']);
+
+                $result = array();
+                /* @var $entity \DB\Entity */
+                while ($entity = $sth->fetch()) {
+
+                    $result[$entity->getId()] = $entity;
+                }
+
+                return $result;
+            } catch (\Exception $e) {
 
                 throw $e;
             }
+        } else {
+            throw new \DB\Exception\DBException(sprintf('Unknown %s entity type!', $entityType));
         }
     }
 
-    public function select($entityType, $criteria, $order = null, $offset = 0, $limit = 0)
+    public function selectOne($entityType, $criteria, $order = array())
     {
-        
-    }
+        $result = $this->select($entityType, $criteria, $order, 0, 1);
 
-    public function selectOne($entityType, $criteria, $order = null)
-    {
-        
+        return $result ? reset($result) : $result;
     }
 
     public function update($entitiesList)
     {
-        
+        if (!is_array($entitiesList)) {
+            $entitiesList = array();
+        }
+
+        /* @var $connection \PDO */
+        $connection = $this->_connection->getConnection();
+
+        try {
+
+            $settings = $this->_entitySettings['entities'];
+            $command = new \DB\Query\Mysql\Update();
+
+            $connection->beginTransaction();
+
+            foreach ($entitiesList as $entity) {
+
+                if ($entity instanceof \DB\Entity) {
+
+                    if (isset($settings[$entity->getType()]['table'])) {
+
+                        $values = $entity->toArray();
+
+                        $command->setTable($settings[$entity->getType()]['table']);
+                        $command->setFields(array_keys($values));
+
+                        $connection->prepare($command->compile())->execute($values);
+                    }
+                }
+            }
+
+            $connection->commit();
+        } catch (\Exception $e) {
+
+            $connection->rollBack();
+
+            throw $e;
+        }
     }
 
 }

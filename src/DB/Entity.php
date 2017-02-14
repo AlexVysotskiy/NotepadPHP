@@ -28,5 +28,5 @@ abstract class Entity
     /**
      * подготавливаем данные для сохранения
      */
-    abstract public function toArray($params);
+    abstract public function toArray();
 }
