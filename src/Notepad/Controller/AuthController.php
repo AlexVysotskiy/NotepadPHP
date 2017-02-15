@@ -26,8 +26,10 @@ class AuthController extends BaseController
 
             try {
 
-                if ($userKit->authUser($request->get('login'), $request->get('password'))) {
+                if ($user = $userKit->authUser($request->get('login'), $request->get('password'))) {
 
+                    $this->getSession()->setIsAuth($user->getId());
+                    
                     return $this->redirectByRoute('profile');
                 } else {
                     $this->assign('error', 'Вы ввели неверный логин/пароль!');
@@ -55,8 +57,10 @@ class AuthController extends BaseController
 
             try {
 
-                if ($userKit->registerUser($request->get('login'), $request->get('password'))) {
+                if ($user = $userKit->registerUser($request->get('login'), $request->get('password'))) {
 
+                    $this->getSession()->setIsAuth($user->getId());
+                    
                     return $this->redirectByRoute('profile');
                 } else {
                     $this->assign('error', 'Пользователь с таким логином уже существует');

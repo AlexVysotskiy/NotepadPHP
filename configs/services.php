@@ -47,7 +47,13 @@ return array(
         )
     ),
     'notes_kit' => array(
-        'class' => '\Notepad\Kit\NotesList',
+        'class' => '\Notepad\Kit\NotesKit',
+        'calls' => array(
+            'setEntityManager' => array('@db.connector'),
+        )
+    ),
+    'api_kit' => array(
+        'class' => '\API\Kit\MainKit',
         'calls' => array(
             'setEntityManager' => array('@db.connector'),
         )

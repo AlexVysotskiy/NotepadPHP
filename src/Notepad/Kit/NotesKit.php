@@ -8,7 +8,7 @@ use Notepad\Entity\Note;
 /**
  * @author Alexander
  */
-class NotesList extends AbstractKit
+class NotesKit extends AbstractKit
 {
 
     /**
@@ -27,7 +27,7 @@ class NotesList extends AbstractKit
         $list = $this->_entityManager->select(Note::ENTITY_TYPE, $criteria, array(
             'creation' => 'DESC'
                 ), $page, $limit);
-
+        
         $total = $this->_entityManager->count(Note::ENTITY_TYPE, $criteria);
 
         return new \DB\Model\Paginator($page, $limit, $total, $list);
@@ -60,7 +60,7 @@ class NotesList extends AbstractKit
 
             $this->_entityManager->getDriver()->insert($note);
 
-            return $note->getId();
+            return $note;
         }
 
         return false;

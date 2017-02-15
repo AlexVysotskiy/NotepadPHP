@@ -6,7 +6,7 @@ return array(
         'connection' => array(
             'user' => 'dragon_gate',
             'password' => 'dragongatepass',
-            'dbname' => 'notepad_db',
+            'dbname' => 'notepad_db1',
             'host' => 'localhost',
         ),
         'entities' => array(
@@ -17,7 +17,11 @@ return array(
             'note' => array(
                 'class' => '\Notepad\Entity\Note',
                 'table' => 'note',
-            )
+            ),
+            'apiAuth' => array(
+                'class' => '\API\Entity\Auth',
+                'table' => 'api_auth',
+            ),
         )
     ),
     'anon.route_redirect' => 'login',

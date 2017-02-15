@@ -1,11 +1,11 @@
 <?php
 
 return array(
-//    'default' => array(
-//        'path' => '/',
-//        'controller' => '\Base\Controller\BaseController',
-//        'action' => 'defaultAction'
-//    ),
+    'install' => array(
+        'path' => '/installAPP',
+        'controller' => '\Core\Http\Controller\BaseController',
+        'action' => 'install'
+    ),
     'profile' => array(
         'name' => 'profile',
         'path' => '/profile',
@@ -54,5 +54,53 @@ return array(
         'controller' => '\Notepad\Controller\AuthController',
         'action' => 'logout',
         'auth' => 'anon'
+    ),
+    'apiRegistration' => array(
+        'name' => 'apiRegistration',
+        'path' => '/api/registration',
+        'controller' => '\API\Controller\AuthController',
+        'action' => 'registration'
+    ),
+    'apiAuth' => array(
+        'name' => 'apiAuth',
+        'path' => '/api/auth',
+        'controller' => '\API\Controller\AuthController',
+        'action' => 'auth'
+    ),
+    'apiUser' => array(
+        'name' => 'apiUser',
+        'path' => '/api/user',
+        'controller' => '\API\Controller\AuthController',
+        'action' => 'user'
+    ),
+    'apiNote' => array(
+        'name' => 'apiNote',
+        'path' => '/api/note',
+        'controller' => '\API\Controller\NotesController',
+        'action' => 'note'
+    ),
+    'apiNotesList' => array(
+        'name' => 'apiNotesList',
+        'path' => '/api/notes',
+        'controller' => '\API\Controller\NotesController',
+        'action' => 'notesList'
+    ),
+    'apiNoteAdd' => array(
+        'name' => 'apiNoteAdd',
+        'path' => '/api/note/add',
+        'controller' => '\API\Controller\NotesController',
+        'action' => 'addNote'
+    ),
+    'apiNoteEdit' => array(
+        'name' => 'apiNoteEdit',
+        'path' => '/api/note/edit',
+        'controller' => '\API\Controller\NotesController',
+        'action' => 'editNote'
+    ),
+    'removeNote' => array(
+        'name' => 'removeNote',
+        'path' => '/api/note/remove',
+        'controller' => '\API\Controller\NotesController',
+        'action' => 'removeNote'
     ),
 );

@@ -99,7 +99,6 @@ class MySQLDriver extends Driver
 
     public function insert($entitiesList)
     {
-
         if (!is_array($entitiesList)) {
             $entitiesList = array($entitiesList);
         }
@@ -112,13 +111,11 @@ class MySQLDriver extends Driver
             $settings = $this->_entitySettings['entities'];
             $command = new \DB\Query\Mysql\Insert();
 
-
-
             $connection->beginTransaction();
 
             foreach ($entitiesList as $entity) {
 
-                if ($entity instanceof \DB\Entity && !$entity->getId()) {
+                if ($entity instanceof \DB\Entity) {
 
                     if (isset($settings[$entity->getType()]['table'])) {
 
@@ -135,7 +132,9 @@ class MySQLDriver extends Driver
                             throw new \DB\Exception\DBException($connection->errorInfo());
                         }
 
-                        $entity->setId($connection->lastInsertId());
+                        if (!$entity->getId()) {
+                            $entity->setId($connection->lastInsertId());
+                        }
                     }
                 }
             }
@@ -154,7 +153,7 @@ class MySQLDriver extends Driver
         if (isset($this->_entitySettings['entities'][$entityType]['table'])) {
 
             $settings = $this->_entitySettings['entities'][$entityType];
-            
+
             /* @var $connection \PDO */
             $connection = $this->_connection->getConnection();
 
@@ -173,7 +172,7 @@ class MySQLDriver extends Driver
                 $command->setFields(array('*'));
 
                 $sth = $connection->query($command->compile());
-                
+
                 $sth->setFetchMode(\PDO::FETCH_CLASS, $settings['class']);
 
                 $result = array();
@@ -253,6 +252,10 @@ class MySQLDriver extends Driver
                     if (isset($settings[$entity->getType()]['table'])) {
 
                         $values = $entity->toArray();
+
+                        //
+                        $command->where()->eq('id', $values['id']);
+                        unset($values['id']);
 
                         $command->setTable($settings[$entity->getType()]['table']);
                         $command->setFields(array_keys($values));

@@ -39,9 +39,7 @@ class UsersKit extends AbstractKit
             ));
 
             if ($user && $user->getPassword() == $this->calculatePaswordHash($password)) {
-
-                $this->_session->setIsAuth($user->getId());
-                return true;
+                return $user;
             }
         }
 
@@ -64,9 +62,9 @@ class UsersKit extends AbstractKit
                 
                 $this->_entityManager->getDriver()->insert($user);
                 
-                $this->_session->setIsAuth($user->getId());
+//                $this->_session->setIsAuth($user->getId());
                 
-                return $user->getId();
+                return $user;
             }
         }
 

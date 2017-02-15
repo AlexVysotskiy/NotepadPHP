@@ -17,7 +17,7 @@ class NotesController extends BaseController
     {
         $user = $this->getCurrentUser();
 
-        /* @var $kit \Notepad\Kit\NotesList */
+        /* @var $kit \Notepad\Kit\NotesKit */
         $kit = $this->get('notes_kit');
 
         $page = abs(intval($request->get('page')));
@@ -33,7 +33,7 @@ class NotesController extends BaseController
     {
         $user = $this->getCurrentUser();
 
-        /* @var $kit \Notepad\Kit\NotesList */
+        /* @var $kit \Notepad\Kit\NotesKit */
         $kit = $this->get('notes_kit');
 
         $noteId = intval($request->get('noteId'));
@@ -80,7 +80,7 @@ class NotesController extends BaseController
     {
         $user = $this->getCurrentUser();
 
-        /* @var $kit \Notepad\Kit\NotesList */
+        /* @var $kit \Notepad\Kit\NotesKit */
         $kit = $this->get('notes_kit');
 
         $noteId = intval($request->get('noteId'));
@@ -99,7 +99,7 @@ class NotesController extends BaseController
     {
         $user = $this->getCurrentUser();
 
-        /* @var $kit \Notepad\Kit\NotesList */
+        /* @var $kit \Notepad\Kit\NotesKit */
         $kit = $this->get('notes_kit');
 
         if ($request->isMethod('post')) {

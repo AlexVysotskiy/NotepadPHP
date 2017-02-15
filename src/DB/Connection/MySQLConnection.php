@@ -16,7 +16,9 @@ class MySQLConnection extends Connection
         $settings = $this->_settings;
         $this->_connection = new \PDO('mysql:host='
                 . $settings->values['host'] . ';dbname='
-                . $settings->values['dbname'], $settings->values['user'], $settings->values['password']);
+                . $settings->values['dbname'], $settings->values['user'], $settings->values['password'], array(
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+        ));
     }
 
     protected function closeConnection()
