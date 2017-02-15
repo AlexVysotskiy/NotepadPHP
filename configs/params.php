@@ -4,9 +4,9 @@ return array(
     'db' => array(
         'driver' => 'mysql',
         'connection' => array(
-            'user' => 'dragon_gate',
-            'password' => 'dragongatepass',
-            'dbname' => 'notepad_db1',
+            'user' => null,
+            'password' => null,
+            'dbname' => null,
             'host' => 'localhost',
         ),
         'entities' => array(
