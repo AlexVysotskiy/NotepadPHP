@@ -53,7 +53,7 @@ return array(
         'path' => '/logout',
         'controller' => '\Notepad\Controller\AuthController',
         'action' => 'logout',
-        'auth' => 'anon'
+//        'auth' => 'anon'
     ),
     'apiRegistration' => array(
         'name' => 'apiRegistration',
