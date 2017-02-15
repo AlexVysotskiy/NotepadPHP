@@ -53,7 +53,7 @@ abstract class Mysql extends Query
             $order = array();
 
             foreach ($this->_order as $column => $type) {
-                $order[] = $column . '=' . $type;
+                $order[] = $column . ' ' . $type;
             }
 
             $sqlPattern .= ' ORDER BY ' . implode(', ', $order);

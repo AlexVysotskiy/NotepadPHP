@@ -11,14 +11,18 @@ return array(
         ),
         'entities' => array(
             'user' => array(
-                'class' => '',
-                'table' => ''
+                'class' => '\Notepad\Entity\User',
+                'table' => 'users'
             ),
             'note' => array(
-                'class' => '',
-                'table' => '',
+                'class' => '\Notepad\Entity\Note',
+                'table' => 'note',
             )
         )
     ),
-    'anon.route_redirect' => 'default'
+    'anon.route_redirect' => 'login',
+    'auth.route_redirect' => 'profile',
+    'auth' => array(
+        'passwod.sault' => 'adasdasdas1312312'
+    )
 );

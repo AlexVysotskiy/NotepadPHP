@@ -3,7 +3,7 @@
 <div class="col-md-3 col-md-offset-4">
 
     <h1 class="text-center">
-        Авторизация
+        Регистрация
     </h1>
 
     <hr>
@@ -13,13 +13,13 @@
             <strong>
                 Ошибка!
             </strong>
-            <?php  echo $error; ?>
+            <?php echo $error; ?>
         </div>
     <?php } ?>
 
     <form method="post">
         <div class="form-group">
-            <label for="login">Логин</label>
+            <label for="login">Логин</label> (допускаются латинские буквы с числами и ./-/_)
             <input type="text" class="form-control" id="login" name="login">
         </div>
         <div class="form-group">
@@ -27,8 +27,10 @@
             <input type="password" class="form-control" id="password" placeholder="" name="password">
         </div>
         <div class="text-right">
-            <button type="submit" class="btn btn-default">Войти</button>
-            <a href="<?php echo $router->generateUrl('registration') ?>" class="btn btn-success">Регистрация</a>
+            <button type="submit" class="btn btn-default">Регистрация</button>
+            <a href="<?php echo $router->generateUrl('login') ?>" class="btn btn-success">
+                Войти
+            </a>
         </div>
     </form>
 </div>

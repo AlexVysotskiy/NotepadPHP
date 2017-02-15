@@ -1,0 +1,44 @@
+html
+{
+    height: 100%;
+}
+
+body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#main-content
+{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin-top: 50px;
+}
+
+#main-content > .outer-holder {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+#main-content > .outer-holder > .middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#main-content  > .outer-holder > .middle > .inner {
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+a:hover
+{
+    text-decoration: none;
+}

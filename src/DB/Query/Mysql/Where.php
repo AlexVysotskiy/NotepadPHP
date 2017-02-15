@@ -23,7 +23,7 @@ class Where
 
     public function eq($column, $value)
     {
-        $this->_list[] = $column . '=' . ((string) $value);
+        $this->_list[] = $column . '=' . (is_numeric($value) ? $value : '\'' . ((string) $value) . '\'');
     }
 
     public function gt($column, $value)

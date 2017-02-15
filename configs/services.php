@@ -5,7 +5,7 @@ return array(
         'class' => '\Core\Http\Router',
         'calls' => array(
             'setConfigType' => array('php'),
-            'setDefaultRoute' => array('default'),
+            'setDefaultRoute' => array('login'),
             'setRequest' => array('@request'),
         )
     ),
@@ -17,7 +17,7 @@ return array(
         )
     ),
     'session' => array(
-        'class' => '\Core\Http\Request\Session'
+        'class' => '\Core\Http\Request\Session',
     ),
     'cookie' => array(
         'class' => '\Core\Http\Request\Cookie'
@@ -35,7 +35,21 @@ return array(
         'class' => '\DB\Driver\MySQLDriver',
         'calls' => array(
             'setConnectionSettings' => array('%db:connection'),
-            'setEntitySettings' => array('%db:entities'),
+            'setEntitySettings' => array('%db'),
         )
     ),
+    'users_kit' => array(
+        'class' => '\Notepad\Kit\UsersKit',
+        'calls' => array(
+            'setEntityManager' => array('@db.connector'),
+            'setAuthSettings' => array('%auth'),
+            'setSession' => array('@session')
+        )
+    ),
+    'notes_kit' => array(
+        'class' => '\Notepad\Kit\NotesList',
+        'calls' => array(
+            'setEntityManager' => array('@db.connector'),
+        )
+    )
 );

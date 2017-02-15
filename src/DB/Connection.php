@@ -39,6 +39,10 @@ abstract class Connection
      */
     protected abstract function closeConnection();
 
+    /**
+     * 
+     * @return \PDO
+     */
     public function getConnection()
     {
         if (!$this->_connection) {

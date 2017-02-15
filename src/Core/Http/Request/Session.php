@@ -57,12 +57,23 @@ class Session
     public function clear()
     {
         $_SESSION = array();
+        $this->_params = array();
         session_destroy();
     }
-    
+
+    /**
+     * устанавливаем в сессии, что пользователь авторизован
+     * @param type $userId
+     */
+    public function setIsAuth($userId)
+    {
+        $this->set('auth', 1);
+        $this->set('userId', $userId);
+    }
+
     public function isAuth()
     {
-        return true;
+        return $this->get('auth') === 1;
     }
 
 }

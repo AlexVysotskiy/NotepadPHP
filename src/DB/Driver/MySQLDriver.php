@@ -15,7 +15,7 @@ class MySQLDriver extends Driver
     public function delete($entitiesList)
     {
         if (!is_array($entitiesList)) {
-            $entitiesList = array();
+            $entitiesList = array($entitiesList);
         }
 
         $removedEntities = array();
@@ -99,8 +99,9 @@ class MySQLDriver extends Driver
 
     public function insert($entitiesList)
     {
+
         if (!is_array($entitiesList)) {
-            $entitiesList = array();
+            $entitiesList = array($entitiesList);
         }
 
         /* @var $connection \PDO */
@@ -111,21 +112,30 @@ class MySQLDriver extends Driver
             $settings = $this->_entitySettings['entities'];
             $command = new \DB\Query\Mysql\Insert();
 
+
+
             $connection->beginTransaction();
 
             foreach ($entitiesList as $entity) {
 
-                if ($entity instanceof \DB\Entity) {
+                if ($entity instanceof \DB\Entity && !$entity->getId()) {
 
                     if (isset($settings[$entity->getType()]['table'])) {
 
                         $values = $entity->toArray();
 
                         $command->setTable($settings[$entity->getType()]['table']);
+
                         $command->setInsertCount(1);
                         $command->setFields(array_keys($values));
 
-                        $connection->prepare($command->compile())->execute(array_values($values));
+                        $result = $connection->prepare($command->compile())->execute(array_values($values));
+
+                        if (!$result) {
+                            throw new \DB\Exception\DBException($connection->errorInfo());
+                        }
+
+                        $entity->setId($connection->lastInsertId());
                     }
                 }
             }
@@ -144,13 +154,13 @@ class MySQLDriver extends Driver
         if (isset($this->_entitySettings['entities'][$entityType]['table'])) {
 
             $settings = $this->_entitySettings['entities'][$entityType];
-
+            
             /* @var $connection \PDO */
             $connection = $this->_connection->getConnection();
 
             try {
 
-                $command = new \DB\Query\Mysql\Insert();
+                $command = new \DB\Query\Mysql\Select();
                 $command->setTable($settings['table']);
                 $command->setOrder($order);
                 $command->setPage($page);
@@ -163,12 +173,13 @@ class MySQLDriver extends Driver
                 $command->setFields(array('*'));
 
                 $sth = $connection->query($command->compile());
+                
                 $sth->setFetchMode(\PDO::FETCH_CLASS, $settings['class']);
 
                 $result = array();
+
                 /* @var $entity \DB\Entity */
                 while ($entity = $sth->fetch()) {
-
                     $result[$entity->getId()] = $entity;
                 }
 
@@ -189,10 +200,40 @@ class MySQLDriver extends Driver
         return $result ? reset($result) : $result;
     }
 
+    public function count($entityType, $criteria)
+    {
+        if (isset($this->_entitySettings['entities'][$entityType]['table'])) {
+
+            $settings = $this->_entitySettings['entities'][$entityType];
+
+            /* @var $connection \PDO */
+            $connection = $this->_connection->getConnection();
+
+            try {
+
+                $command = new \DB\Query\Mysql\Select();
+                $command->setTable($settings['table']);
+
+                foreach ($criteria as $info) {
+                    $command->where()->add($info[0], $info[1], $info[2]);
+                }
+
+                $command->setFields(array('COUNT(*)'));
+
+                return $connection->query($command->compile())->fetchColumn();
+            } catch (\Exception $e) {
+
+                throw $e;
+            }
+        } else {
+            throw new \DB\Exception\DBException(sprintf('Unknown %s entity type!', $entityType));
+        }
+    }
+
     public function update($entitiesList)
     {
         if (!is_array($entitiesList)) {
-            $entitiesList = array();
+            $entitiesList = array($entitiesList);
         }
 
         /* @var $connection \PDO */

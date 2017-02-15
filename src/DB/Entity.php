@@ -13,6 +13,11 @@ abstract class Entity
     /**
      * значение primary key
      */
+    abstract public function setId($id);
+
+    /**
+     * значение primary key
+     */
     abstract public function getId();
 
     public function getType()

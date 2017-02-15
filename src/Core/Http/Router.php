@@ -69,8 +69,8 @@ class Router
 
             if ($absolute) {
 
-                $prefix = 'http' . ($this->_request->get('HTTPS') ? 's' : '' )
-                        . '://' . $this->_request->get('SERVER_NAME');
+                $prefix = 'http' . ($this->_request->getServerParam('HTTPS') ? 's' : '' )
+                        . '://' . $this->_request->getServerParam('SERVER_NAME');
 
                 $url = $prefix . $url;
             }

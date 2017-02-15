@@ -53,6 +53,11 @@ class Request
         $this->uri = preg_replace('/\?.+$/', '', $uri);
     }
 
+    public function isMethod($type)
+    {
+        return $this->getServerParam('REQUEST_METHOD') == strtoupper($type);
+    }
+
     public function getUri()
     {
         return $this->uri;
@@ -60,7 +65,17 @@ class Request
 
     public function get($param)
     {
-        return isset($this->request) ? $this->request[$param] : (isset($this->server[$param]) ? $this->server[$param] : null);
+        return isset($this->request[$param]) ? trim(htmlentities(addslashes($this->request[$param]), ENT_QUOTES)) : null;
+    }
+
+    public function getAll()
+    {
+        return $this->request;
+    }
+
+    public function getServerParam($param)
+    {
+        return isset($this->server[$param]) ? $this->server[$param] : null;
     }
 
     public function set($param, $value)

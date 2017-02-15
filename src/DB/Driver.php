@@ -40,12 +40,17 @@ abstract class Driver
     abstract public function selectOne($entityType, $criteria, $order = array());
 
     /**
+     * 
+     */
+    abstract public function count($entityType, $criteria);
+
+    /**
      * удаляем сущности
      */
     abstract public function delete($entitiesList);
 
     abstract public function deleteByCriteria($entityType, $criteria);
-    
+
 //    abstract public function executeCommand();
 
     public function setConnection(Connection $connection)

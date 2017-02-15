@@ -27,6 +27,7 @@ class Insert extends Mysql
         $sql = 'INSERT INTO ' . $this->_table . ' (' . implode(', ', $this->_fields) . ') values ';
 
         $list = array_fill(0, count($this->_fields), '?');
+        
         $list = array_fill(0, $this->_count, '(' . implode(', ', $list) . ')');
 
         $sql .= implode(', ', $list);

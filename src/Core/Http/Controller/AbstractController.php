@@ -13,6 +13,18 @@ abstract class AbstractController
      * @var Container 
      */
     protected $_container = null;
+    
+    /**
+     *
+     * @var type 
+     */
+    protected $_routeInfo = null;
+
+    /**
+     *
+     * @var type 
+     */
+    protected $_assigned = array();
 
     public function __construct(Container $container)
     {
@@ -21,7 +33,10 @@ abstract class AbstractController
 
     protected function render($view, $data = array())
     {
-        $content = $this->get('template_renderer')->render($view, $data);
+        $data['router'] = $this->get('router');
+        $data['routeInfo'] = $this->_routeInfo;
+
+        $content = $this->get('template_renderer')->render($view, array_merge($data, $this->_assigned));
 
         return new Response($content);
     }
@@ -43,4 +58,21 @@ abstract class AbstractController
         return $this->_container->getParameter($param);
     }
 
+    protected function assign($key, $value)
+    {
+        $this->_assigned[$key] = $value;
+    }
+
+    /**
+     * @return \Core\Http\Request\Session
+     */
+    protected function getSession()
+    {
+        return $this->get('session');
+    }
+
+    public function setRouteInfo($info)
+    {
+        $this->_routeInfo = $info;
+    }
 }

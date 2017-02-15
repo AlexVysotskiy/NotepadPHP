@@ -25,22 +25,43 @@ class App
 
         $routeInfo = $router->getRouteByPath($request->getUri());
 
-        if (isset($routeInfo['needAuth']) && $routeInfo['needAuth'] && !$session->isAuth()) {
+        if (isset($routeInfo['auth'])) {
 
-            // аноним хочет зайти, редиректим
-            $redirectUrl = $router->generateUrl($container->getParameter('anon.route_redirect'));
-            $response = new Http\Response\Redirect($redirectUrl);
-        } else {
+            if ($routeInfo['auth'] == 'auth' && !$session->isAuth()) {
 
-            $controller = $routeInfo['controller'];
-            $action = $routeInfo['action'];
+                // аноним хочет зайти, редиректим
+                $redirectUrl = $router->generateUrl($container->getParameter('anon.route_redirect'));
+                $response = new Http\Response\Redirect($redirectUrl);
+            } elseif ($routeInfo['auth'] == 'anon' && $session->isAuth()) {
 
-            $controller = new $controller($container);
-            $response = $controller->$action($request);
+                // аноним хочет зайти, редиректим
+                $redirectUrl = $router->generateUrl($container->getParameter('auth.route_redirect'));
+                $response = new Http\Response\Redirect($redirectUrl);
+            }
+
+            if (isset($response)) {
+
+                $request->session->close();
+                return $response->send();
+                exit;
+            }
         }
 
-        $response->send();
+        $controller = $routeInfo['controller'];
+        $action = $routeInfo['action'];
+
+        $controller = new $controller($container);
+        $controller->setRouteInfo($routeInfo);
+
+        $response = $controller->$action($request);
+
+        if (!($response instanceof Http\Response)) {
+            throw new \Exception('Action must return some response!');
+        }
+
+
         $request->session->close();
+        $response->send();
     }
 
 }
